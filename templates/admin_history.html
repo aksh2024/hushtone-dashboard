@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin | Gesture History</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #E8E6E3, #CDBBA7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    padding: 30px;
+    width: 95%;
+    max-width: 1000px;
+    text-align: center;
+}
+
+h2 {
+    font-family: 'Segoe Script', cursive;
+    color: #4A3F35;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+th {
+    background-color: #4A3F35;
+    color: white;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4A3F35;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-family: 'Segoe UI', sans-serif;
+    transition: 0.2s;
+}
+
+.button:hover {
+    background-color: #5c4c45;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    
+    <h2>Gesture Recognition History</h2>
+
+    <div style="text-align:right; margin-bottom:10px;">
+        <a href="{{ url_for('clear_history') }}" class="button"
+           onclick="return confirm('Clear all history?')">Clear History</a>
+    </div>
+
+    {% if history %}
+    <table>
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Gesture</th>
+                <th>Action Text</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for h in history %}
+            <tr>
+                <td>{{ h[1] or '' }}</td>
+                <td>{{ h[2] or '' }}</td>
+                <td>{{ h[3] or '' }}</td>
+                <td>{{ h[4] or '' }}</td>
+                
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No history records available.</p>
+    {% endif %}
+
+    <div style="margin-top:20px;">
+        <a href="{{ url_for('admin_dashboard') }}" class="button">Back to Dashboard</a>
+    </div>
+
+</div>
+
+</body>
+</html>

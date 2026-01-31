@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Account</title>
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#E8E6E3,#CDBBA7);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    width: 420px;
+}
+h1 {
+    font-family: 'Segoe Script', cursive;
+    color: #4A3F35;
+    text-align: center;
+}
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-family: 'Segoe UI', sans-serif;
+}
+button {
+    background: #4A3F35;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+button:hover {
+    background: #3a3229;
+}
+a.back-home {
+    color: #4A3F35; /* Matches guidelines and history.html */
+    text-decoration: none;
+}
+a.back-home:hover {
+    text-decoration: underline;
+}
+.flash {
+    background-color: #fffae6;
+    color: #4a3f35;
+    border-left: 4px solid #4A3F35;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+h3 {
+    color: #4A3F35;
+    margin-top: 20px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Account</h1>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="flash">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- Profile form -->
+  <form method="POST" action="/account">
+    <input name="name" placeholder="Full name" value="{{ name }}">
+    <input name="email" placeholder="Email" value="{{ email }}">
+    <input name="age" placeholder="Age" value="{{ age }}">
+    <input name="city" placeholder="City" value="{{ city }}">
+    <button type="submit">Save Profile</button>
+  </form>
+
+  <hr>
+
+  <!-- Change password form -->
+  <h3>Change password</h3>
+  <form method="POST" action="/change_password">
+    <input name="current_password" placeholder="Current password" type="password" required>
+    <input name="new_password" placeholder="New password" type="password" required>
+    <button type="submit">Change Password</button>
+  </form>
+
+<!-- Back to Home link -->
+<p style="margin-top:12px; text-align:center;">
+    <a href="/main" style="color:#4A3F35; font-weight:bold; text-decoration:none; font-family:'Segoe UI',sans-serif;">
+        Back to Home
+    </a>
+</p>
+</div>
+</body>
+</html>

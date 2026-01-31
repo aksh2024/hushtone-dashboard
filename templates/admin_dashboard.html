@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Hushtone</title>
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #E8E6E3, #CDBBA7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    padding: 30px;
+    width: 80%;          /* reduced from 90% */
+    max-width: 750px;    /* reduced from 900px */
+    text-align: center;
+    position: relative;
+}
+
+h1 {
+    font-family: 'Segoe Script', cursive;
+    color: #4A3F35;
+    margin-bottom: 25px;
+}
+
+.dashboard-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;           /* slightly smaller gap */
+    flex-wrap: nowrap;  
+}
+
+.dashboard-buttons a {
+    background: #4A3F35;
+    color: white;
+    padding: 20px 15px;  /* reduced padding */
+    border-radius: 20px;
+    font-size: 18px;     /* slightly smaller font */
+    text-decoration: none;
+    flex: 1 1 0;        
+    height: 150px;       /* reduced height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.dashboard-buttons a:hover {
+    background: #5c4c45;
+    transform: scale(1.05);
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Admin Dashboard</h1>
+
+    <div class="dashboard-buttons">
+        <a href="{{ url_for('manage_users') }}">Manage Users</a>
+        <a href="{{ url_for('view_history') }}">View History</a>
+        <a href="{{ url_for('gesture_approvals') }}">Gesture Meaning Approvals</a>
+        <a href="{{ url_for('admin_all_submissions') }}" class="button-box">All Submissions</a>
+    </div>
+</div>
+
+</body>
+</html>

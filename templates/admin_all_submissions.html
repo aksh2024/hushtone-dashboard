@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Gesture Submissions</title>
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #E8E6E3, #CDBBA7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    padding: 30px;
+    width: 90%;
+    max-width: 900px;
+    text-align: center;
+    min-height: 300px;
+}
+h2 { font-family: 'Segoe Script', cursive; color: #4A3F35; margin-bottom: 20px; }
+table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+th, td { border: 1px solid #ddd; padding: 10px; }
+th { background-color: #4A3F35; color: white; }
+.status-pending { color: orange; font-weight: bold; }
+.status-approved { color: green; font-weight: bold; }
+.status-rejected { color: red; font-weight: bold; }
+a.button {
+    display: inline-block; margin-top: 15px; padding: 10px 20px;
+    background-color: #4A3F35; color: white; border-radius: 10px; text-decoration: none; transition: 0.2s;
+}
+a.button:hover { background-color: #5c4c45; }
+</style>
+<style>
+    /* ---------- Body & Font ---------- */
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #E8E6E3, #CDBBA7); /* soft beige gradient like main page */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* top aligned for content */
+        min-height: 100vh;
+        padding-top: 50px;
+    }
+    
+    /* ---------- Card Container ---------- */
+    .card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        padding: 30px;
+        width: 90%;
+        max-width: 900px;
+        text-align: center;
+    }
+    
+    /* ---------- Headings ---------- */
+    h1, h2, h3 {
+        font-family: 'Segoe Script', cursive;
+        color: #4A3F35; /* brown color */
+        margin-bottom: 20px;
+    }
+    
+    /* ---------- Tables ---------- */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+    
+    th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    th {
+        background-color: #4A3F35; /* brown header */
+        color: white;
+    }
+    
+    .status-pending { color: orange; font-weight: bold; }
+    .status-approved { color: green; font-weight: bold; }
+    .status-rejected { color: red; font-weight: bold; }
+    
+    /* ---------- Buttons ---------- */
+    a.button, button {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 20px;
+        background-color: #4A3F35; /* brown */
+        color: white;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: 0.2s;
+        font-family: 'Segoe UI', sans-serif;
+    }
+    
+    a.button:hover, button:hover {
+        background-color: #5c4c45; /* darker brown on hover */
+    }
+    
+    /* ---------- Centered Button Container ---------- */
+    .center-btn {
+        text-align: center;
+        margin-top: 15px;
+    }
+    
+    /* ---------- Navbar for Admin ---------- */
+    .navbar {
+        background-color: #4A3F35; /* brown navbar */
+        padding: 10px 20px;
+        color: white;
+    }
+    
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    
+    .navbar a:hover {
+        color: #d9cbbf; /* soft hover color */
+    }
+    
+    /* ---------- Misc ---------- */
+    p {
+        font-size: 14px;
+    }
+    </style>
+    
+</head>
+<body>
+<div class="card">
+    <h2>All Gesture Submissions</h2>
+    {% if submissions %}
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Gesture</th>
+                <th>Meaning</th>
+                <th>Language</th>
+                <th>Status</th>
+                <th>Submitted On</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for s in submissions %}
+            <tr>
+                <td>{{ s[1] }}</td>
+                <td>{{ s[2] }}</td>
+                <td>{{ s[3] }}</td>
+                <td>{{ s[4] }}</td>
+                <td class="status-{{ s[5] | lower }}">{{ s[5] }}</td>
+                <td>{{ s[6] }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No gesture submissions found.</p>
+    {% endif %}
+
+    <a href="{{ url_for('admin_dashboard') }}" class="button">Back to Dashboard</a>
+</div>
+</body>
+</html>

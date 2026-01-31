@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Login | Hushtone</title>
+<style>
+body {
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background: linear-gradient(135deg,#E8E6E3,#CDBBA7);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+.card {
+    background:white;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    padding:40px;
+    width:90%;
+    max-width:400px;
+    text-align:center;
+}
+h1 {
+    font-family:'Segoe Script',cursive;
+    color:#4A3F35;
+    margin-bottom:10px;
+}
+input {
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border-radius:10px;
+    border:1px solid #ccc;
+    font-size:16px;
+}
+button {
+    background-color:#4A3F35;
+    color:white;
+    padding:12px 25px;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+    transition:all .2s;
+    font-family:'Segoe UI',sans-serif;
+    width:100%;
+}
+button:hover {
+    background-color:#5c4c45;
+    transform:scale(1.03);
+}
+.flash {
+    color:red;
+    margin-bottom:10px;
+    font-size:14px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+    <h1>Admin Login</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="flash">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <form method="POST">
+        <input type="text" name="username" placeholder="Enter Username" required>
+        <input type="password" name="password" placeholder="Enter Password" required>
+        <button type="submit">Login</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin | Gesture Approvals</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #E8E6E3, #CDBBA7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    padding: 30px;
+    width: 95%;
+    max-width: 900px;
+    max-height: 800;
+    text-align: center;
+}
+
+h2 {
+    font-family: 'Segoe Script', cursive;
+    color: #4A3F35;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+th {
+    background-color: #4A3F35;
+    color: white;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 18px;
+    background-color: #4A3F35;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-family: 'Segoe UI', sans-serif;
+    transition: 0.2s;
+    font-size: 14px;
+}
+
+.button:hover {
+    background-color: #5c4c45;
+}
+
+.approve-btn {
+    background-color: #2e7d32;
+}
+
+.reject-btn {
+    background-color: #b23b3b;
+}
+
+.approve-btn:hover {
+    background-color: #256428;
+}
+
+.reject-btn:hover {
+    background-color: #8f2f2f;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+
+
+    <h2>Pending Gesture Meanings</h2>
+
+    {% if pending_meanings %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Gesture</th>
+                <th>Custom Meaning</th>
+                <th>Language</th>
+                <th>Submitted</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for g in pending_meanings %}
+            <tr>
+                <td>{{ g[0] }}</td>
+                <td>{{ g[1] }}</td>
+                <td>{{ g[2] }}</td>
+                <td>{{ g[3] }}</td>
+                <td>{{ g[4] }}</td>
+                <td>{{ g[5] }}</td>
+                <td>
+                    <a href="{{ url_for('approve_meaning', meaning_id=g[0]) }}"
+                       class="button approve-btn">Approve</a>
+                    <a href="{{ url_for('reject_meaning', meaning_id=g[0]) }}"
+                       class="button reject-btn">Reject</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No pending meanings.</p>
+    {% endif %}
+
+    <div style="margin-top:20px;">
+        <a href="{{ url_for('admin_dashboard') }}" class="button">Back to Dashboard</a>
+    </div>
+
+</div>
+
+</body>
+</html>

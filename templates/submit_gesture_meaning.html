@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit Gesture Meaning | Hushtone</title>
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #E8E6E3, #CDBBA7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    padding: 30px 40px;
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    position: relative;
+    min-height: 450px; /* increase height */
+}
+
+h2 {
+    font-family: 'Segoe Script', cursive;
+    color: #4A3F35;
+    margin-bottom: 25px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+select, textarea, button {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+textarea {
+    resize: none;
+    height: 80px;
+}
+
+button {
+    background: #4A3F35;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 10px 0;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: #5c4c45;
+    transform: scale(1.05);
+}
+
+.msg {
+    text-align: center;
+    color: green;
+    margin-bottom: 10px;
+}
+
+a.view-submissions {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    color: #4A3F35;
+    text-decoration: underline;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Submit Gesture Meaning</h2>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="msg">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <label>Select Gesture</label>
+        <select name="gesture_name" required>
+            <option value="">-- Select Gesture --</option>
+            <option value="fist">Fist</option>
+            <option value="open">Open Hand</option>
+            <option value="thumbs_up">Thumbs Up</option>
+            <option value="peace">Peace</option>
+            <option value="call_me">Call Me</option>
+            <option value="ok">OK</option>
+            <option value="pointing">Pointing</option>
+            <option value="rock_on">Rock On</option>
+        </select>
+
+        <label>Custom Meaning</label>
+        <textarea name="custom_meaning" placeholder="Enter your meaning..." required></textarea>
+
+        <label>Language</label>
+        <select name="language" required>
+            <option value="">-- Select Language --</option>
+            <option value="en">English</option>
+            <option value="ta">Tamil</option>
+            <option value="ml">Malayalam</option>
+            <option value="hi">Hindi</option>
+        </select>
+
+        <button type="submit">Submit for Approval</button>
+    </form>
+
+    <a href="{{ url_for('my_submissions') }}" class="view-submissions">View My Submissions</a>
+
+   <!-- Back to Home link -->
+<p style="margin-top:12px; text-align:center;">
+    <a href="/main" style="color:#4A3F35; font-weight:bold; text-decoration:none; font-family:'Segoe UI',sans-serif;">
+        Back to Home
+    </a>
+</a>
+
+    
+</div>
+
+</body>
+</html>

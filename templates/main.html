@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main | Hushtone</title>
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #E8E6E3, #CDBBA7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    padding: 40px;
+    width: 90%;
+    max-width: 600px;
+    min-height: 250px;
+    text-align: center;
+    position: relative;
+}
+h1 {
+    font-family: 'Segoe Script', cursive;
+    color: #4A3F35;
+    margin-bottom: 10px;
+}
+.tagline {
+    font-family: 'Segoe Script', cursive;
+    color: #4A3F35;
+    font-size: 26px;
+    margin-bottom: 30px;
+}
+button {
+    background-color: #4A3F35;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Segoe UI', sans-serif;
+}
+button:hover {
+    background-color: #5c4c45;
+    transform: scale(1.05);
+}
+img#video-feed {
+    width: 100%;
+    max-height: 500px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    display: none;
+}
+#gesture-display {
+    font-size: 28px;
+    color: #4A3F35;
+    font-family: 'Segoe Script', cursive;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Hamburger / Account menu */
+.menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    border-radius: 8px;
+    z-index: 200;
+    transition: background-color 0.2s ease;
+}
+.menu div {
+    width: 25px;
+    height: 3px;
+    background-color: #4A3F35;
+    border-radius: 2px;
+}
+
+/* Hamburger icon hover */
+.menu:hover div {
+    background-color: #7a6656; /* lighter brown */
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    overflow: hidden;
+    min-width: 220px;
+    z-index: 100;
+}
+.dropdown a, .dropdown div.submenu {
+    display: block;
+    padding: 10px 20px;
+    color: #4A3F35;
+    text-decoration: none;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 16px;
+}
+
+/* Main dropdown hover */
+.dropdown a:hover,
+.dropdown div.submenu:hover {
+    background-color: rgba(74, 63, 53, 0.15); /* soft brown */
+}
+
+/* Submenu items hover */
+.submenu-content div:hover {
+    background-color: rgba(74, 63, 53, 0.15); /* soft brown */
+    color: #4A3F35;
+    cursor: pointer;
+}
+
+.submenu-content {
+    display: none;
+    flex-direction: column;
+    padding-left: 10px;
+}
+.submenu-content div {
+    padding: 5px 0;
+}
+
+/* Start / Stop buttons container */
+.buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+    <!-- Hamburger menu -->
+    <div class="menu" onclick="toggleDropdown()">
+        <div></div><div></div><div></div>
+    </div>
+
+    <div class="dropdown" id="dropdown-menu">
+        <!-- User Account -->
+        <a href="{{ url_for('account') }}">User Account</a>
+
+        <!-- Language Selection -->
+        <div class="submenu" onclick="toggleSubmenu('language-sub')">
+            Select Language: <span id="selected-lang">English</span>
+        </div>
+        <div class="submenu-content" id="language-sub">
+            <div data-lang="en">English</div>
+            <div data-lang="hi">Hindi</div>
+            <div data-lang="ta">Tamil</div>
+            <div data-lang="ml">Malayalam</div>
+        </div>
+
+        <!-- Gesture History -->
+        <a href="{{ url_for('history') }}">Gesture History</a>
+
+        <!-- Submit Gesture Meaning -->
+        <a href="{{ url_for('submit_gesture_meaning') }}">Custom Gesture Meaning</a>
+
+        <!-- Guidelines -->
+        <a href="{{ url_for('guidelines') }}">Guidelines</a>
+
+        <!-- Logout -->
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+    <h1>Welcome, {{ username }}</h1>
+    <div class="tagline">Let Your Hands Speak Your Story</div>
+
+    <!-- Video feed -->
+    <img id="video-feed" src="" alt="">
+
+    <!-- Detected gesture -->
+    <div id="gesture-display"></div>
+
+    <!-- Start / Stop buttons -->
+    <div class="buttons">
+        <button id="start-btn" onclick="startRecognition()">Start Recognition</button>
+        <button id="stop-btn" onclick="stopRecognition()" style="display:none;">Stop Recognition</button>
+    </div>
+</div>
+
+<script>
+let voices = [];
+
+function loadVoices() {
+    voices = speechSynthesis.getVoices();
+}
+
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+let lastGesture = "";
+let gestureInterval;
+let selectedLangCode = "en";
+
+// Hamburger menu toggle
+function toggleDropdown() {
+    const menu = document.getElementById("dropdown-menu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+// Submenu toggle
+function toggleSubmenu(id){
+    const sub = document.getElementById(id);
+    sub.style.display = sub.style.display === 'flex' ? 'none' : 'flex';
+}
+
+// Language selection
+document.querySelectorAll('#language-sub div').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+        e.preventDefault();
+        document.getElementById('selected-lang').textContent = a.textContent;
+        selectedLangCode = a.getAttribute('data-lang');
+        document.getElementById('language-sub').style.display='none';
+        lastGesture = "";
+    });
+});
+
+function speakGesture(text){
+    if(!text || text===lastGesture) return;
+    lastGesture = text;
+
+    if(window.currentAudio){
+        window.currentAudio.pause();
+        window.currentAudio.currentTime = 0;
+    }
+
+    // Always use server-side TTS for all languages
+    window.currentAudio = new Audio(`/speak?text=${encodeURIComponent(text)}&lang=${selectedLangCode}`);
+    window.currentAudio.play();
+}
+
+// Start recognition
+function startRecognition(){
+    const video = document.getElementById("video-feed");
+    video.src="/video_feed";
+    video.style.display="block";
+
+    document.getElementById("start-btn").style.display="none";
+    document.getElementById("stop-btn").style.display="inline-block";
+    document.getElementById("gesture-display").textContent="Detecting...";
+    fetch("/start_recognition");
+
+    gestureInterval = setInterval(() => {
+    fetch(`/gesture_status?lang=${selectedLangCode}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.history && data.history.length > 0) {
+                const text = data.translated;  // <-- translated text
+                document.getElementById("gesture-display").textContent = text;
+                speakGesture(text);
+            }
+        });
+    }, 300);
+
+
+}
+
+// Stop recognition
+function stopRecognition(){
+    const video = document.getElementById("video-feed");
+    video.src="";
+    video.style.display="none";
+
+    document.getElementById("start-btn").style.display="inline-block";
+    document.getElementById("stop-btn").style.display="none";
+    fetch("/stop_recognition");
+    clearInterval(gestureInterval);
+    lastGesture="";
+    document.getElementById("gesture-display").textContent="";
+
+    if(window.currentAudio){
+        window.currentAudio.pause();
+        window.currentAudio.currentTime=0;
+    }
+}
+</script>
+<script>
+    document.addEventListener("click", function (event) {
+        const menu = document.getElementById("dropdown-menu");
+        const hamburger = document.querySelector(".menu");
+    
+        if (
+            menu.style.display === "block" &&
+            !menu.contains(event.target) &&
+            !hamburger.contains(event.target)
+        ) {
+            menu.style.display = "none";
+        }
+    });
+    </script>
+    
+</body>
+</html>
